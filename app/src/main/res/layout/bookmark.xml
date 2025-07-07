@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
+        <TextView
+            android:id="@+id/tvChapter"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textSize="14sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,8 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:textSize="14sp"
-                android:text="1" />
+                android:textSize="14sp"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -50,17 +56,6 @@
                     android:src="@drawable/outline_bookmark_star_24"
                     android:tint="@android:color/black"
                     android:padding="8dp"/>
-
-                <!--<ImageButton
-                    android:id="@+id/btnView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/view"
-                    android:src="@android:drawable/ic_menu_view"
-                    android:tint="@android:color/black"
-                    android:padding="8dp"/>-->
-
             </LinearLayout>
         </LinearLayout>
         <TextView

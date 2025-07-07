@@ -1,10 +1,12 @@
 package com.dip.geetainbangla.model
 
-data class Chapter(
-    val verse: List<Verse>
+data class Bookmarks (
+    val bookmark: List<Bookmark>
 )
 
-data class Verse(
+data class Bookmark(
+    val key: String,
+    val chapter: String,
     val serialNumber: String,
     val stanzas: List<String>,
     val meaning: String
