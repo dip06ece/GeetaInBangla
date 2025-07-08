@@ -44,7 +44,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/audio"
                     android:src="@android:drawable/ic_media_play"
-                    android:tint="@android:color/black"
+                    android:tint="@android:color/darker_gray"
                     android:padding="8dp"/>
 
                 <ImageButton
@@ -54,7 +54,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/bookmark"
                     android:src="@drawable/outline_bookmark_star_24"
-                    android:tint="@android:color/black"
+                    android:tint="@android:color/darker_gray"
                     android:padding="8dp"/>
             </LinearLayout>
         </LinearLayout>
