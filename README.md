@@ -33,11 +33,15 @@ Key goals:
 
 ## 📸 App Screenshots
 
-| Main Menu | Introduction| Chapter Content| Chapter Content| Bookmarks| Contacts| Acknowledgement|
-|-------------|------------|----------------|----------------|----------------|----------------|
-| ![Main](images/1.jpg) | ![Main](images/2.jpg) | ![Main](images/3.jpg) |![Main](images/4.jpg) |![Main](images/5.jpg) |![Main](images/6.jpg) |
+<p align="center">
+  <img src="images/1.jpg" width="150" />
+  <img src="images/2.jpg" width="150" />
+  <img src="images/3.jpg" width="150" />
+  <img src="images/4.jpg" width="150" />
+  <img src="images/5.jpg" width="150" />
+  <img src="images/6.jpg" width="150" />
+</p>
 
-*Replace these with your actual image paths or URLs.*
 
 ---
 
