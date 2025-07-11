@@ -55,7 +55,7 @@ object commonlib {
             // ********************************************************
             val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
             val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
-            val btnView = view.findViewById<ImageButton>(R.id.btnView)
+            //val btnView = view.findViewById<ImageButton>(R.id.btnView)
             // Calculate verseString to three Digits
             var verseString = ""
             if(verseNumber>9){
@@ -66,7 +66,7 @@ object commonlib {
             //
             btnAudio.tag = "Audio_${chapterNo}_${verseString}"
             btnBookmark.tag = "Verse_${chapterBack}_${verse.serialNumber}"
-            btnView.tag = "Read_${chapterNo}_${verseString}"
+            //btnView.tag = "Read_${chapterNo}_${verseString}"
             // OPTIONAL: example click listeners
             btnAudio.setOnClickListener {
                 var vNum = it.tag as String
@@ -81,10 +81,10 @@ object commonlib {
                 //Toast.makeText(it.context, "$vNum", Toast.LENGTH_LONG).show()
             }
 
-            btnView.setOnClickListener {
-                val vNum = it.tag as String
-                // read processing
-            }
+//            btnView.setOnClickListener {
+//                val vNum = it.tag as String
+//                // read processing
+//            }
             // ****************************************
             val verseLabel = activity.getString(R.string.verse_number)
             tvSerial.text = "$verseLabel ${verse.serialNumber}"
