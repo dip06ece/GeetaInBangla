@@ -1,0 +1,73 @@
+<resources>
+<string name="app_name">শ্রীমদ্ভগবদ্গীতা</string>
+<string name="navigation_drawer_open">Open navigation drawer</string>
+<string name="navigation_drawer_close">Close navigation drawer</string>
+<string name="nav_header_title">  শ্রীমদ্ভগবদ্গীতা</string>
+<!--<string name="nav_header_subtitle">android.studio@android.com</string>-->
+<string name="nav_header_desc">Navigation header</string>
+<string name="action_settings">উৎসর্গ ও কৃতজ্ঞতা স্বীকার</string>
+
+<string name="menu_home">Home</string>
+<string name="menu_gallery">Gallery</string>
+<string name="menu_slideshow">Slideshow</string>
+
+<string name="menu_introduction">গীতাপাঠপূর্ব মঙ্গলাচরণ</string>
+<string name="menu_bookmarks">বুকমার্ক কৃত শ্লোকসমূহ </string>
+<string name="menu_chapters">অধ্যায় সমূহ</string>
+<string name="menu_chapter1">প্রথম অধ্যায়</string>
+<string name="menu_chapter2">দ্বিতীয় অধ্যায়</string>
+<string name="menu_chapter3">তৃতীয় অধ্যায়</string>
+<string name="menu_chapter4">চতুর্থ অধ্যায়</string>
+<string name="menu_chapter5">পঞ্চম অধ্যায়</string>
+<string name="menu_chapter6">ষষ্ঠ অধ্যায়</string>
+<string name="menu_chapter7">সপ্তম অধ্যায়</string>
+<string name="menu_chapter8">অষ্টম অধ্যায়</string>
+<string name="menu_chapter9">নবম অধ্যায়</string>
+<string name="menu_chapter10">দশম অধ্যায়</string>
+<string name="menu_chapter11">একাদশ অধ্যায়</string>
+<string name="menu_chapter12">দ্বাদশ অধ্যায়</string>
+<string name="menu_chapter13">ত্রয়োদশ অধ্যায়</string>
+<string name="menu_chapter14">চতুর্দশ অধ্যায়</string>
+<string name="menu_chapter15">পঞ্চদশ অধ্যায়</string>
+<string name="menu_chapter16">ষোড়শ অধ্যায়</string>
+<string name="menu_chapter17">সপ্তদশ অধ্যায়</string>
+<string name="menu_chapter18">অষ্টাদশ অধ্যায়</string>
+
+<string name="menu_chapter1title">প্রথম অধ্যায় - অর্জুনবিষাদযোগ</string>
+<string name="menu_chapter2title">দ্বিতীয় অধ্যায় - সাংখ্যযোগ</string>
+<string name="menu_chapter3title">তৃতীয় অধ্যায় - কর্মযোগ</string>
+<string name="menu_chapter4title">চতুর্থ অধ্যায় - জ্ঞানযোগ</string>
+<string name="menu_chapter5title">পঞ্চম অধ্যায় - কর্মসন্যাসযোগ</string>
+<string name="menu_chapter6title">ষষ্ঠ অধ্যায় - ধ্যানযোগ</string>
+<string name="menu_chapter7title">সপ্তম অধ্যায় - জ্ঞান-বিজ্ঞানযোগ</string>
+<string name="menu_chapter8title">অষ্টম অধ্যায় - অক্ষরব্রহ্মযোগ</string>
+<string name="menu_chapter9title">নবম অধ্যায় - রাজবিদ্যারাজগুহ্যযোগ</string>
+<string name="menu_chapter10title">দশম অধ্যায় - বিভূতিযোগ</string>
+<string name="menu_chapter11title">একাদশ অধ্যায় - বিশ্বরূপদর্শনযোগ</string>
+<string name="menu_chapter12title">দ্বাদশ অধ্যায় - ভক্তিযোগ</string>
+<string name="menu_chapter13title">ত্রয়োদশ অধ্যায় - ক্ষেত্রক্ষেত্রজ্ঞবিভাগযোগ</string>
+<string name="menu_chapter14title">চতুর্দশ অধ্যায় - গুণত্রয়বিভাগযোগ</string>
+<string name="menu_chapter15title">পঞ্চদশ অধ্যায় - পুরুষোত্তমযোগ</string>
+<string name="menu_chapter16title">ষোড়শ অধ্যায় - দৈবাসুরসম্পদবিভাগযোগ</string>
+<string name="menu_chapter17title">সপ্তদশ অধ্যায় - শ্রদ্ধাত্রয়বিভাগযোগ</string>
+<string name="menu_chapter18title">অষ্টাদশ অধ্যায় - মোক্ষযোগ</string>
+
+<string name="verse_number">শ্লোক নং - </string>
+<string name="chapter_number">অধ্যায় - </string>
+<string name="verse_meaning">অর্থ - </string>
+<string name="fab">test</string>
+<string name="audio">অডিও</string>
+<string name="bookmark">বুকমার্ক</string>
+<string name="view">পাঠকৃত</string>
+
+<string name="dedicated_to">উৎসর্গ</string>
+<string name="dedicated_to_text">এই অ্যাপ্লিকেশনটি সহজে শ্রীমদ্ভগবদ্গীতা পড়া ও শেখার জন্য তৈরি করা হয়েছে। যারা গীতার সত্য জানতে এবং তা জীবনে প্রয়োগ করে মানসিক শান্তি অর্জন করতে আগ্রহী তাদের সকলের জন্য এটি উৎসর্গ করা হল।
+    অ্যাপ্লিকেশনটি আমার স্বর্গীয় ঠাকুরদা (সুনীল কুমার দাশ), স্বর্গীয় ঠাকুমা (নিরুপমা দাশ), স্বর্গীয় পিতা (দীপক কুমার দাশ) এবং স্বর্গীয় কাকা (সংকর কুমার দাশ) এর প্রতি শ্রদ্ধার্ঘ্য হিসেবে নির্মিত এবং তাদের স্মৃতি সংরক্ষণের জন্য এটি রক্ষণাবেক্ষণ করা হবে।</string>
+<string name="creditgoes_to">কৃতজ্ঞতা স্বীকার</string>
+<string name="creditgoes_to_text">এই অ্যাপ্লিকেশনটির জন্য শ্রীমদ্ভগবদ্গীতার মন্ত্র সমূহের অর্থ &lt;a href="https://gitasanghabd.org/gita.php"&gt;শ্রীশ্রী গীতাসংঘ বাংলাদেশ&lt;/a&gt; হতে সংগ্রহ করা হয়েছে।
+    অ্যাপ্লিকেশনটি মন্ত্র সমূহের অডিও সরাসরি &lt;a href="https://www.holy-bhagavad-gita.org/"&gt;ভাগবত গীতা ওয়েবসাইট&lt;/a&gt; থেকে স্ট্রিমিং করে।
+    গীতার মন্ত্র সমূহ সহজে পাঠ ও বোঝার সুবিধা করার জন্য এই ওয়েবসাইট দুইটির উদ্ভাবকদের আন্তরিক শ্রদ্ধা ও ধন্যবাদ জ্ঞাপন করছি।
+</string>
+<string name="licensed_under">মেধাস্বত্ব ও লাইসেন্স</string>
+<string name="licensed_under_text">অ্যাপ্লিকেশনটির মেধাস্বত্ব সংরক্ষিত। সমুদয় সোর্স কোড &lt;a href="https://www.apache.org/licenses/LICENSE-2.0"&gt; অ্যাপাচি লাইসেন্স ২.০&lt;/a&gt; এর অধীনে &lt;a href="https://github.com/dip06ece/BanglaGeeta"&gt; গীটহাবে&lt;/a&gt; উন্মুক্ত থাকবে।</string>
+</resources>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_introduction">
+
+    <fragment
+        android:id="@+id/nav_introduction"
+        android:name="com.dip.geetainbangla.ui.chapters.IntroductionFragment"
+        android:label="@string/menu_introduction"
+        tools:layout="@layout/fragment_introduction" />
+
+    <fragment
+        android:id="@+id/nav_bookmarks"
+        android:name="com.dip.geetainbangla.ui.chapters.BookmarkFragment"
+        android:label="@string/menu_bookmarks"
+        tools:layout="@layout/fragment_bookmark" />
+    <fragment
+        android:id="@+id/nav_chapter1"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter1Fragment"
+        android:label="@string/menu_chapter1"
+        tools:layout="@layout/fragment_chapter1" />
+    <fragment
+        android:id="@+id/nav_chapter2"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter2Fragment"
+        android:label="@string/menu_chapter2"
+        tools:layout="@layout/fragment_chapter2" />
+    <fragment
+        android:id="@+id/nav_chapter3"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter3Fragment"
+        android:label="@string/menu_chapter3"
+        tools:layout="@layout/fragment_chapter3" />
+    <fragment
+        android:id="@+id/nav_chapter4"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter4Fragment"
+        android:label="@string/menu_chapter4"
+        tools:layout="@layout/fragment_chapter4" />
+    <fragment
+        android:id="@+id/nav_chapter5"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter5Fragment"
+        android:label="@string/menu_chapter5"
+        tools:layout="@layout/fragment_chapter5" />
+    <fragment
+        android:id="@+id/nav_chapter6"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter6Fragment"
+        android:label="@string/menu_chapter6"
+        tools:layout="@layout/fragment_chapter6" />
+    <fragment
+        android:id="@+id/nav_chapter7"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter7Fragment"
+        android:label="@string/menu_chapter7"
+        tools:layout="@layout/fragment_chapter7" />
+    <fragment
+        android:id="@+id/nav_chapter8"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter8Fragment"
+        android:label="@string/menu_chapter8"
+        tools:layout="@layout/fragment_chapter8" />
+    <fragment
+        android:id="@+id/nav_chapter9"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter9Fragment"
+        android:label="@string/menu_chapter9"
+        tools:layout="@layout/fragment_chapter9" />
+    <fragment
+        android:id="@+id/nav_chapter10"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter10Fragment"
+        android:label="@string/menu_chapter10"
+        tools:layout="@layout/fragment_chapter10" />
+    <fragment
+        android:id="@+id/nav_chapter11"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter11Fragment"
+        android:label="@string/menu_chapter11"
+        tools:layout="@layout/fragment_chapter11" />
+    <fragment
+        android:id="@+id/nav_chapter12"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter12Fragment"
+        android:label="@string/menu_chapter12"
+        tools:layout="@layout/fragment_chapter12" />
+    <fragment
+        android:id="@+id/nav_chapter13"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter13Fragment"
+        android:label="@string/menu_chapter13"
+        tools:layout="@layout/fragment_chapter13" />
+    <fragment
+        android:id="@+id/nav_chapter14"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter14Fragment"
+        android:label="@string/menu_chapter14"
+        tools:layout="@layout/fragment_chapter14" />
+    <fragment
+        android:id="@+id/nav_chapter15"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter15Fragment"
+        android:label="@string/menu_chapter15"
+        tools:layout="@layout/fragment_chapter15" />
+    <fragment
+        android:id="@+id/nav_chapter16"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter16Fragment"
+        android:label="@string/menu_chapter16"
+        tools:layout="@layout/fragment_chapter16" />
+    <fragment
+        android:id="@+id/nav_chapter17"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter17Fragment"
+        android:label="@string/menu_chapter17"
+        tools:layout="@layout/fragment_chapter17" />
+    <fragment
+        android:id="@+id/nav_chapter18"
+        android:name="com.dip.geetainbangla.ui.chapters.Chapter18Fragment"
+        android:label="@string/menu_chapter18"
+        tools:layout="@layout/fragment_chapter18" />
+
+</navigation>
