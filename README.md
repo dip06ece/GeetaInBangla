@@ -33,9 +33,9 @@ Key goals:
 
 ## 📸 App Screenshots
 
-| Main Screen | Verse View | Audio Playback |
-|-------------|------------|----------------|
-| ![Main](images/main_screen.png) | ![Verse](images/verse_screen.png) | ![Audio](images/audio_screen.png) |
+| Main Menu | Introduction| Chapter Content| Chapter Content| Bookmarks| Contacts| Acknowledgement|
+|-------------|------------|----------------|----------------|----------------|----------------|
+| ![Main](images/1.jpg) | ![Main](images/2.jpg) | ![Main](images/3.jpg) |![Main](images/4.jpg) |![Main](images/5.jpg) |![Main](images/6.jpg) |
 
 *Replace these with your actual image paths or URLs.*
 
