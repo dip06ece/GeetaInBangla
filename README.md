@@ -42,7 +42,6 @@ Key goals:
   <img src="images/6.jpg" width="150" />
 </p>
 
-
 ---
 
 ## 🚀 Upcoming Features
@@ -66,6 +65,7 @@ Key goals:
 <p>The meanings of the verses in this application have been sourced from <a href="https://gitasanghabd.org/gita.php">Shree Shree Gita Sangha Bangladesh</a>.</p>
 <p>The application streams audio of the verses directly from the <a href="https://www.holy-bhagavad-gita.org/">Holy Bhagavad Gita website</a>.</p>
 <p>Heartfelt respect and thanks to the creators of these two websites for making it easier to read and understand the verses of the Gita.</p>
+
 ---
 
 ## 📄 License
