@@ -7,7 +7,7 @@ This is a simple android application  to easily read geeta in bangla, bookmark m
 
 ---
 
-## ✨ বিবরণ
+## ✨ Description
 
 This app is designed to help users read the Bhagavad Gita in Bangla in easy to understand interface, verse audio recitation support, bookmark and un-bookmark verses and user-friendly navigation.
 
