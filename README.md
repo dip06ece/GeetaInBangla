@@ -63,15 +63,15 @@ Key goals:
 
 ## 🙏 Acknowledgements
 
-- **Holy-Bhagavad-Gita.org** for audio recitations and references
-- Bangla font resources from [Google Fonts](https://fonts.google.com/)
-- [Material Design Guidelines](https://material.io/) for UI inspiration
-
+<p>The meanings of the verses in this application have been sourced from <a href="https://gitasanghabd.org/gita.php">Shree Shree Gita Sangha Bangladesh</a>.</p>
+<p>The application streams audio of the verses directly from the <a href="https://www.holy-bhagavad-gita.org/">Holy Bhagavad Gita website</a>.</p>
+<p>Heartfelt respect and thanks to the creators of these two websites for making it easier to read and understand the verses of the Gita.</p>
 ---
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+This application is copyright protected. © 2025 **Dip Ranjon Das**.
+This project is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ---
 
