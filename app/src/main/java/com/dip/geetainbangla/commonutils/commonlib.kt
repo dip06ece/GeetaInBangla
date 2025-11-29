@@ -69,7 +69,9 @@ object commonlib {
                 var vNum = it.tag as String
                 vNum = vNum.removePrefix("Audio_")
                 //Toast.makeText(context, vNum, Toast.LENGTH_SHORT).show()
-                val audioUrl = "https://www.holy-bhagavad-gita.org/public/audio/${vNum}.mp3"
+                //val audioUrl = "https://www.holy-bhagavad-gita.org/public/audio/${vNum}.mp3"
+                //val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${vNum}.mp3"
+                val audioUrl = verse.site_url
                 Log.d("AudioPlayer", "Audio URL: $audioUrl")
                 (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl)
             }
@@ -327,7 +329,7 @@ fun loadAndDisplayBookmark(
             val parts = vNum.split("_")
             val tag_name = "${parts[0]}_${parts[1]}"
             //showAudioUrlDialog(context,vNum)
-            val audioUrl = "https://www.holy-bhagavad-gita.org/public/audio/${tag_name}.mp3"
+            val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${tag_name}.mp3"
             Log.d("AudioPlayer", "Audio URL: $audioUrl")
             (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl)
         }
