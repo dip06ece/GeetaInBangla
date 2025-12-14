@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067786972424",
+    "project_id": "geetainbangla",
+    "storage_bucket": "geetainbangla.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067786972424:android:11b7f2984a99db9a9850bd",
+        "android_client_info": {
+          "package_name": "com.dip.geetainbangla"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnk_bw0SQOT8WqntyOyCJs95KWZRTN6Kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

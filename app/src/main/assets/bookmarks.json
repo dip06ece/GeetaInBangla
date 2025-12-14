@@ -5,7 +5,10 @@
       "chapter": "",
       "serialNumber": "",
       "stanzas": ["","",""],
-      "meaning": ""
+      "meaning": "",
+      "id": "",
+      "site_url": "",
+      "store_url": ""
     }
   ]
 }

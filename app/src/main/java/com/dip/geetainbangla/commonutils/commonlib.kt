@@ -72,8 +72,9 @@ object commonlib {
                 //val audioUrl = "https://www.holy-bhagavad-gita.org/public/audio/${vNum}.mp3"
                 //val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${vNum}.mp3"
                 val audioUrl = verse.site_url
+                val driveURL = verse.store_url
                 Log.d("AudioPlayer", "Audio URL: $audioUrl")
-                (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl)
+                (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl,driveURL)
             }
 
             btnBookmark.setOnClickListener {
@@ -104,7 +105,10 @@ object commonlib {
                         chapter = chapterText,
                         serialNumber = serialNumberBangla,
                         stanzas = verse.stanzas,
-                        meaning = verse.meaning
+                        meaning = verse.meaning,
+                        id = verse.id,
+                        site_url = verse.site_url,
+                        store_url = verse.store_url
                     )
 
                     val updatedList = bookmarks.bookmark.toMutableList()
@@ -132,64 +136,134 @@ object commonlib {
         }
     }
 
-    fun AppCompatActivity.playAudioFromUrl(url: String) {
-        try {
-            Toast.makeText(this@playAudioFromUrl, "অডিও লোড হচ্ছে...", Toast.LENGTH_SHORT).show()
+    fun AppCompatActivity.playAudioFromUrl(primaryUrl: String, fallbackUrl: String) {
+        fun tryPlay(url: String, onResult: (Boolean) -> Unit) {
+            try {
+                Toast.makeText(this, "অডিও লোড হচ্ছে...", Toast.LENGTH_SHORT).show()
 
-            mediaPlayer?.release()
+                mediaPlayer?.release()
+                mediaPlayer = null
 
-            val handler = Handler(Looper.getMainLooper())
-            var timeoutRunnable: Runnable? = null
+                val handler = Handler(Looper.getMainLooper())
+                var timeoutRunnable: Runnable? = null
 
-            mediaPlayer = MediaPlayer().apply {
-                setDataSource(url)
+                mediaPlayer = MediaPlayer().apply {
 
-                setOnPreparedListener {
-                    // Cancel timeout if prepared successfully
-                    timeoutRunnable?.let { handler.removeCallbacks(it) }
-                    it.start()
+                    setDataSource(url)
+
+                    setOnPreparedListener {
+                        timeoutRunnable?.let { handler.removeCallbacks(it) }
+                        it.start()
+                        onResult(true)
+                    }
+
+                    setOnCompletionListener {
+                        it.release()
+                        mediaPlayer = null
+                    }
+
+                    setOnErrorListener { mp, what, extra ->
+                        timeoutRunnable?.let { handler.removeCallbacks(it) }
+                        Log.e("AudioPlayer", "Error: $what | Extra: $extra for: $url")
+                        mp.release()
+                        mediaPlayer = null
+                        onResult(false)
+                        true
+                    }
+
+                    prepareAsync()
+
+                    timeoutRunnable = Runnable {
+                        release()
+                        mediaPlayer = null
+                        onResult(false)
+                    }
+                    handler.postDelayed(timeoutRunnable!!, 5000) // 10 sec timeout
                 }
-
-                setOnCompletionListener {
-                    it.release()
-                    mediaPlayer = null
-                }
-
-                setOnErrorListener { mp, what, extra ->
-                    timeoutRunnable?.let { handler.removeCallbacks(it) }
-                    Toast.makeText(
-                        this@playAudioFromUrl,
-                        "অডিও ফাইলটি পাওয়া যায় নি",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("AudioPlayer", "Error playing audio: $what $extra")
-                    mp.release()
-                    mediaPlayer = null
-                    true
-                }
-
-                prepareAsync()
-
-                // start timeout countdown
-                timeoutRunnable = Runnable {
-                    release()
-                    mediaPlayer = null
-                    Toast.makeText(
-                        this@playAudioFromUrl,
-                        "অডিও ফাইলটি চালু করা যায় নি",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                handler.postDelayed(timeoutRunnable!!, 10000) // 10 seconds timeout
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onResult(false)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(
-                this@playAudioFromUrl,
-                "অডিও লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে ইন্টারনেট সংযোগ পরীক্ষা করুন।",
-                Toast.LENGTH_LONG
-            ).show()
         }
+
+        // ▶ FIRST try the primary URL (site_url)
+        tryPlay(primaryUrl) { success ->
+            if (!success) {
+                // ▶ FALLBACK to Google Drive (store_url)
+                Toast.makeText(
+                    this,
+                    "অডিও চালু করা যায় নি, পুনরায় চেষ্টা করা হচ্ছে...",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                tryPlay(fallbackUrl) { backupSuccess ->
+                    if (!backupSuccess) {
+                        Toast.makeText(
+                            this,
+                            "অডিও ফাইলটি চালু করা যায় নি",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        }
+//        try {
+//            Toast.makeText(this@playAudioFromUrl, "অডিও লোড হচ্ছে...", Toast.LENGTH_SHORT).show()
+//
+//            mediaPlayer?.release()
+//
+//            val handler = Handler(Looper.getMainLooper())
+//            var timeoutRunnable: Runnable? = null
+//
+//            mediaPlayer = MediaPlayer().apply {
+//                setDataSource(primaryUrl)
+//
+//                setOnPreparedListener {
+//                    // Cancel timeout if prepared successfully
+//                    timeoutRunnable?.let { handler.removeCallbacks(it) }
+//                    it.start()
+//                }
+//
+//                setOnCompletionListener {
+//                    it.release()
+//                    mediaPlayer = null
+//                }
+//
+//                setOnErrorListener { mp, what, extra ->
+//                    timeoutRunnable?.let { handler.removeCallbacks(it) }
+//                    Toast.makeText(
+//                        this@playAudioFromUrl,
+//                        "অডিও ফাইলটি পাওয়া যায় নি",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    Log.e("AudioPlayer", "Error playing audio: $what $extra")
+//                    mp.release()
+//                    mediaPlayer = null
+//                    true
+//                }
+//
+//                prepareAsync()
+//
+//                // start timeout countdown
+//                timeoutRunnable = Runnable {
+//                    release()
+//                    mediaPlayer = null
+//                    Toast.makeText(
+//                        this@playAudioFromUrl,
+//                        "অডিও ফাইলটি চালু করা যায় নি",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//                handler.postDelayed(timeoutRunnable!!, 10000) // 10 seconds timeout
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            Toast.makeText(
+//                this@playAudioFromUrl,
+//                "অডিও লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে ইন্টারনেট সংযোগ পরীক্ষা করুন।",
+//                Toast.LENGTH_LONG
+//            ).show()
+//        }
     }
 
 //fun AppCompatActivity.playAudioFromUrl(url: String) {
@@ -234,7 +308,7 @@ fun showAudioUrlDialog(context: Context, audioUrl: String) {
         }
         .setNegativeButton("Play Audio") { dialog, _ ->
             if (context is AppCompatActivity) {
-                context.playAudioFromUrl(audioUrl)
+                context.playAudioFromUrl(audioUrl, audioUrl)// ==>>>>>>>>>
             } else {
                 Toast.makeText(context, "Cannot play audio in this context.", Toast.LENGTH_SHORT).show()
             }
@@ -319,6 +393,8 @@ fun loadAndDisplayBookmark(
         val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
 
         val verseString = bookmark.key
+        val audioUrl1 = bookmark.site_url
+        val audioUrl2 = bookmark.store_url
 
         btnAudio.tag = "Audio_${verseString}"
         btnBookmark.tag = "Verse_${verseString}"
@@ -329,9 +405,9 @@ fun loadAndDisplayBookmark(
             val parts = vNum.split("_")
             val tag_name = "${parts[0]}_${parts[1]}"
             //showAudioUrlDialog(context,vNum)
-            val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${tag_name}.mp3"
-            Log.d("AudioPlayer", "Audio URL: $audioUrl")
-            (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl)
+            //val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${tag_name}.mp3"
+            Log.d("AudioPlayer", "Audio URL: $audioUrl1")
+            (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl1, audioUrl2)  //====>
         }
         btnBookmark.setOnClickListener {
             var vNum = it.tag as String
