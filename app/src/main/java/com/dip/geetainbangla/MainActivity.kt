@@ -6,6 +6,7 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -47,17 +48,11 @@ class MainActivity : AppCompatActivity() {
             textView.text = Html.fromHtml(message, Html.FROM_HTML_MODE_LEGACY)
             textView.movementMethod = LinkMovementMethod.getInstance()
 
-            // Create the Snackbar with empty message just to allocate space
             val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
-            // Get the Snackbar layout
-            val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
-            snackbarLayout.setPadding(0, 0, 0, 0) // remove default padding if desired
-
-            // Remove default TextView from Snackbar layout
-            snackbarLayout.removeAllViews()
-
-            // Add your custom layout
-            snackbarLayout.addView(customSnackbarView)
+            val snackbarView = snackbar.view
+            snackbarView.setPadding(0, 0, 0, 0)
+            (snackbarView as ViewGroup).removeAllViews()
+            (snackbarView as ViewGroup).addView(customSnackbarView)
 
             snackbar.show()
         }
@@ -92,33 +87,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-//    fun showSettingsPopup() {
-//        val dialogView = layoutInflater.inflate(R.layout.dialog_settings, null)
-//
-//        //  make hyperlinks clickable
-////        val textView2 = dialogView.findViewById<TextView>(R.id.textDialogMessage2)
-////        val creditHtml = getString(R.string.creditgoes_to_text)
-////        textView2.text = Html.fromHtml(creditHtml, Html.FROM_HTML_MODE_LEGACY)
-////        textView2.movementMethod = LinkMovementMethod.getInstance()
-////
-////        val textView3 = dialogView.findViewById<TextView>(R.id.textDialogMessage3)
-////        val licenseHtml = getString(R.string.licensed_under_text)
-////        textView3.text = Html.fromHtml(licenseHtml, Html.FROM_HTML_MODE_LEGACY)
-////        textView3.movementMethod = LinkMovementMethod.getInstance()
-//
-//        //
-//        val dialog = AlertDialog.Builder(this)
-//            .setView(dialogView)
-//            .setCancelable(false)
-//            .create()
-//
-//        val buttonClose = dialogView.findViewById<Button>(R.id.buttonClose)
-//        buttonClose.setOnClickListener {
-//            dialog.dismiss()
-//        }
-//
-//        dialog.show()
-//    }
     fun showSettingsPopup() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_settings, null)
 

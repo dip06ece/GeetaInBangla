@@ -3,6 +3,9 @@ package com.dip.geetainbangla.commonutils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.media.AudioAttributes
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -18,14 +21,35 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import com.dip.geetainbangla.model.Bookmark
 import com.dip.geetainbangla.model.Bookmarks
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 
 
 object commonlib {
     private var mediaPlayer: MediaPlayer? = null
+
+    fun getCachedAudioFileNames(context: Context): List<String> {
+        val audioDir = File(context.filesDir, "audio")
+
+        if (!audioDir.exists()) {
+            return emptyList()
+        }
+
+        return audioDir.listFiles()
+            ?.filter { it.isFile && it.extension == "mp3" }
+            ?.map { it.name }   // only file names
+            ?: emptyList()
+    }
     fun loadAndDisplayChapter(
         fragment: Fragment,
         jsonFileName: String,
@@ -44,11 +68,33 @@ object commonlib {
 
         val container = fragment.requireView().findViewById<LinearLayout>(containerId)
         val inflater = LayoutInflater.from(context)
-
+        val cachedAudioFiles: List<String> = getCachedAudioFileNames(context)
         var verseNumber = 0
         for (verse in chapter.verse) {
             verseNumber++
             val view = inflater.inflate(R.layout.item_verse, container, false)
+
+            val btnView = view.findViewById<ImageButton>(R.id.btnView)
+            val verse_store_url = verse.store_url
+            if (cachedAudioFiles.contains(verse_store_url)) {
+                // Audio already downloaded → eye bright (gray)
+                //btnView.setImageResource(R.drawable.ic_eye_open)
+                ImageViewCompat.setImageTintList(
+                    btnView,
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(context, android.R.color.darker_gray)
+                    )
+                )
+            } else {
+                // Not downloaded → eye black (black)
+                //btnView.setImageResource(R.drawable.ic_eye_closed)
+                ImageViewCompat.setImageTintList(
+                    btnView,
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(context, android.R.color.black)
+                    )
+                )
+            }
 
             val tvSerial = view.findViewById<TextView>(R.id.tvSerialNumber)
             val tvStanzas = view.findViewById<TextView>(R.id.tvStanzas)
@@ -56,25 +102,25 @@ object commonlib {
 
             val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
             val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
-            //val btnView = view.findViewById<ImageButton>(R.id.btnView)
 
             val verseString = if (verseNumber > 9) "0$verseNumber" else "00$verseNumber"
 
             btnAudio.tag = "Audio_${chapterNo}_${verseString}"
             btnBookmark.tag = "Verse_${chapterNo}_${verseString}_${verse.serialNumber}"
-                    //"${chapterBack}_${verse.serialNumber}"
-            //btnView.tag = "Read_${chapterNo}_${verseString}"
 
             btnAudio.setOnClickListener {
-                var vNum = it.tag as String
-                vNum = vNum.removePrefix("Audio_")
-                //Toast.makeText(context, vNum, Toast.LENGTH_SHORT).show()
-                //val audioUrl = "https://www.holy-bhagavad-gita.org/public/audio/${vNum}.mp3"
-                //val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${vNum}.mp3"
                 val audioUrl = verse.site_url
-                val driveURL = verse.store_url
+                val filename = verse.store_url
                 Log.d("AudioPlayer", "Audio URL: $audioUrl")
-                (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl,driveURL)
+                (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl,filename,) {
+                    // ▶ INSTANT EYE UPDATE
+                    ImageViewCompat.setImageTintList(
+                        btnView,
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(context, android.R.color.darker_gray)
+                        )
+                    )
+                }
             }
 
             btnBookmark.setOnClickListener {
@@ -123,10 +169,9 @@ object commonlib {
                 }
             }
 
-//            btnView.setOnClickListener {
-//                val vNum = it.tag as String
-//                // handle view logic
-//            }
+            btnView.setOnClickListener {
+                stopAudio(context)
+            }
 
             tvSerial.text = "${context.getString(R.string.verse_number)} ${verse.serialNumber}"
             tvStanzas.text = verse.stanzas.joinToString("\n")
@@ -136,164 +181,107 @@ object commonlib {
         }
     }
 
-    fun AppCompatActivity.playAudioFromUrl(primaryUrl: String, fallbackUrl: String) {
-        fun tryPlay(url: String, onResult: (Boolean) -> Unit) {
+    fun stopAudio(context: Context) {
+        try {
+            mediaPlayer?.let {
+                if (it.isPlaying) {
+                    it.stop()
+                }
+                it.release()
+            }
+            mediaPlayer = null
+            Toast.makeText(context, "অডিও বন্ধ করা হয়েছে", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    fun AppCompatActivity.playAudioFromUrl(primaryUrl: String, localFileName: String, onDownloaded: (() -> Unit)? = null) {
+        val audioDir = File(filesDir, "audio").apply {
+            if (!exists()) mkdirs()
+        }
+
+        val localFile = File(audioDir, localFileName)
+
+        fun playFromFile(file: File) {
             try {
-                Toast.makeText(this, "অডিও লোড হচ্ছে...", Toast.LENGTH_SHORT).show()
-
                 mediaPlayer?.release()
-                mediaPlayer = null
-
-                val handler = Handler(Looper.getMainLooper())
-                var timeoutRunnable: Runnable? = null
-
+                Toast.makeText(this, "পূর্বে ডাঊনলোড করা ফাইল থেকে চালানোর চেষ্টা করা হচ্ছে...", Toast.LENGTH_SHORT).show()
                 mediaPlayer = MediaPlayer().apply {
-
-                    setDataSource(url)
-
-                    setOnPreparedListener {
-                        timeoutRunnable?.let { handler.removeCallbacks(it) }
-                        it.start()
-                        onResult(true)
-                    }
-
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    setDataSource(file.absolutePath)
+                    setOnPreparedListener { it.start() }
                     setOnCompletionListener {
                         it.release()
                         mediaPlayer = null
                     }
-
-                    setOnErrorListener { mp, what, extra ->
-                        timeoutRunnable?.let { handler.removeCallbacks(it) }
-                        Log.e("AudioPlayer", "Error: $what | Extra: $extra for: $url")
+                    setOnErrorListener { mp, _, _ ->
                         mp.release()
                         mediaPlayer = null
-                        onResult(false)
+                        Toast.makeText(
+                            this@playAudioFromUrl,
+                            "অডিও চালানো যায়নি",
+                            Toast.LENGTH_LONG
+                        ).show()
                         true
                     }
-
                     prepareAsync()
-
-                    timeoutRunnable = Runnable {
-                        release()
-                        mediaPlayer = null
-                        onResult(false)
-                    }
-                    handler.postDelayed(timeoutRunnable!!, 5000) // 10 sec timeout
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                onResult(false)
             }
         }
 
-        // ▶ FIRST try the primary URL (site_url)
-        tryPlay(primaryUrl) { success ->
-            if (!success) {
-                // ▶ FALLBACK to Google Drive (store_url)
-                Toast.makeText(
-                    this,
-                    "অডিও চালু করা যায় নি, পুনরায় চেষ্টা করা হচ্ছে...",
-                    Toast.LENGTH_SHORT
-                ).show()
+        fun downloadAndPlay() {
+            Toast.makeText(this, "অডিও ডাউনলোড হচ্ছে...", Toast.LENGTH_SHORT).show()
 
-                tryPlay(fallbackUrl) { backupSuccess ->
-                    if (!backupSuccess) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val url = URL(primaryUrl)
+                    val connection = url.openConnection()
+                    connection.connect()
+
+                    connection.getInputStream().use { input ->
+                        FileOutputStream(localFile).use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        // PLAY AUDIO
+                        playFromFile(localFile)
+
+                        // UPDATE UI (eye open)
+                        onDownloaded?.invoke()
+
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            this,
-                            "অডিও ফাইলটি চালু করা যায় নি",
+                            this@playAudioFromUrl,
+                            "অডিও ডাউনলোড করা যায়নি",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
             }
         }
-//        try {
-//            Toast.makeText(this@playAudioFromUrl, "অডিও লোড হচ্ছে...", Toast.LENGTH_SHORT).show()
-//
-//            mediaPlayer?.release()
-//
-//            val handler = Handler(Looper.getMainLooper())
-//            var timeoutRunnable: Runnable? = null
-//
-//            mediaPlayer = MediaPlayer().apply {
-//                setDataSource(primaryUrl)
-//
-//                setOnPreparedListener {
-//                    // Cancel timeout if prepared successfully
-//                    timeoutRunnable?.let { handler.removeCallbacks(it) }
-//                    it.start()
-//                }
-//
-//                setOnCompletionListener {
-//                    it.release()
-//                    mediaPlayer = null
-//                }
-//
-//                setOnErrorListener { mp, what, extra ->
-//                    timeoutRunnable?.let { handler.removeCallbacks(it) }
-//                    Toast.makeText(
-//                        this@playAudioFromUrl,
-//                        "অডিও ফাইলটি পাওয়া যায় নি",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    Log.e("AudioPlayer", "Error playing audio: $what $extra")
-//                    mp.release()
-//                    mediaPlayer = null
-//                    true
-//                }
-//
-//                prepareAsync()
-//
-//                // start timeout countdown
-//                timeoutRunnable = Runnable {
-//                    release()
-//                    mediaPlayer = null
-//                    Toast.makeText(
-//                        this@playAudioFromUrl,
-//                        "অডিও ফাইলটি চালু করা যায় নি",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//                handler.postDelayed(timeoutRunnable!!, 10000) // 10 seconds timeout
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            Toast.makeText(
-//                this@playAudioFromUrl,
-//                "অডিও লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে ইন্টারনেট সংযোগ পরীক্ষা করুন।",
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
+
+        // ▶ OFFLINE-FIRST LOGIC
+        if (localFile.exists()) {
+            playFromFile(localFile)
+        } else {
+            downloadAndPlay()
+        }
     }
 
-//fun AppCompatActivity.playAudioFromUrl(url: String) {
-//    try {
-//        mediaPlayer?.release() // release any existing player
-//        mediaPlayer = MediaPlayer().apply {
-//            setDataSource(url)
-//            setOnPreparedListener {
-//                it.start()
-//            }
-//            setOnCompletionListener {
-//                // optionally release resources after playback
-//                it.release()
-//                mediaPlayer = null
-//            }
-//            setOnErrorListener { mp, what, extra ->
-//                Toast.makeText(this@playAudioFromUrl, "এই অডিও ফাইলটি পাওয়া যায় নি", Toast.LENGTH_SHORT).show()
-//                Log.e("AudioPlayer", "Error playing audio: $what $extra")
-//                mp.release()
-//                mediaPlayer = null
-//                true
-//            }
-//            prepareAsync() // non-blocking
-//        }
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//        //showAudioUrlDialog(this@playAudioFromUrl,url)
-//        Toast.makeText(this@playAudioFromUrl, "অডিও ফাইলটি চালু করা যায় নি", Toast.LENGTH_SHORT).show()
-//    }
-//}
+
 
 fun showAudioUrlDialog(context: Context, audioUrl: String) {
     AlertDialog.Builder(context)
@@ -350,103 +338,107 @@ fun loadAndDisplayIntroduction(
         container.addView(view)
     }
 }
-
 fun loadAndDisplayBookmark(
     fragment: Fragment,
     jsonFileName: String,
     containerId: Int
 ) {
-
     val context = fragment.requireContext()
     val file = File(context.filesDir, jsonFileName)
+
     val jsonString = if (file.exists()) {
         file.readText()
     } else {
         """{"bookmark": []}"""
     }
-//    jsonString = context.assets.open(jsonFileName)
-//        .bufferedReader()
-//        .use { it.readText() }
 
-    val bookmarks = Gson().fromJson(jsonString, Bookmarks::class.java)
-
+    val bookmarksData = Gson().fromJson(jsonString, Bookmarks::class.java)
     val container = fragment.requireView().findViewById<LinearLayout>(containerId)
     val inflater = LayoutInflater.from(context)
 
-    var bookmarkNumber = 0
-    for (bookmark in bookmarks.bookmark) {
-        bookmarkNumber++
-        val view = inflater.inflate(R.layout.bookmark, container, false)
+    container.removeAllViews()
 
-        val tvChapter = view.findViewById<TextView>(R.id.tvChapter)
-        val tvSerial = view.findViewById<TextView>(R.id.tvSerialNumber)
-        val tvStanzas = view.findViewById<TextView>(R.id.tvStanzas)
-        val tvMeaning = view.findViewById<TextView>(R.id.tvMeaning)
+    // 🔹 GROUP BY CHAPTER (numeric)
+    val groupedByChapter = bookmarksData.bookmark
+        .groupBy { it.chapter.toInt() }
+        .toSortedMap() // sort chapters ASC
 
+    for ((chapterNumber, chapterBookmarks) in groupedByChapter) {
 
-        tvChapter.text = "${context.getString(R.string.chapter_number)} ${convertChapterNumberToBangla(bookmark.chapter.toInt())}"
-        tvSerial.text = "${context.getString(R.string.verse_number)} ${bookmark.serialNumber}"
-        tvStanzas.text = bookmark.stanzas.joinToString("\n")
-        tvMeaning.text = "${context.getString(R.string.verse_meaning)}\n${bookmark.meaning}"
-
-        val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
-        val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
-
-        val verseString = bookmark.key
-        val audioUrl1 = bookmark.site_url
-        val audioUrl2 = bookmark.store_url
-
-        btnAudio.tag = "Audio_${verseString}"
-        btnBookmark.tag = "Verse_${verseString}"
-
-        btnAudio.setOnClickListener {   // need to fix the key
-            var vNum = it.tag as String
-            vNum = vNum.removePrefix("Audio_")
-            val parts = vNum.split("_")
-            val tag_name = "${parts[0]}_${parts[1]}"
-            //showAudioUrlDialog(context,vNum)
-            //val audioUrl = "https://www.holy-bhagavad-gita.org/media/audios/${tag_name}.mp3"
-            Log.d("AudioPlayer", "Audio URL: $audioUrl1")
-            (fragment.requireActivity() as? AppCompatActivity)?.playAudioFromUrl(audioUrl1, audioUrl2)  //====>
+        // 🔹 Add chapter header
+        val chapterHeader = TextView(context).apply {
+            text = "অধ্যায় ${convertChapterNumberToBangla(chapterNumber)}"
+            textSize = 18f
+            setPadding(16, 24, 16, 8)
+            setTextColor(ContextCompat.getColor(context, R.color.black))
         }
-        btnBookmark.setOnClickListener {
-            var vNum = it.tag as String
-            vNum = vNum.removePrefix("Verse_")
+        container.addView(chapterHeader)
 
-            val context = fragment.requireContext()
-            val file = File(context.filesDir, "bookmarks.json")
-            val bookmarksJson = if (file.exists()) {
-                file.readText()
-            } else {
-                """{"bookmark": []}"""
+        // 🔹 Sort verses inside chapter by id
+        val sortedBookmarks = chapterBookmarks.sortedBy { it.id.toInt() }
+
+        for (bookmark in sortedBookmarks) {
+
+            val view = inflater.inflate(R.layout.bookmark, container, false)
+
+            val tvChapter = view.findViewById<TextView>(R.id.tvChapter)
+            val tvSerial = view.findViewById<TextView>(R.id.tvSerialNumber)
+            val tvStanzas = view.findViewById<TextView>(R.id.tvStanzas)
+            val tvMeaning = view.findViewById<TextView>(R.id.tvMeaning)
+
+            tvChapter.text =
+                "${context.getString(R.string.chapter_number)} ${convertChapterNumberToBangla(bookmark.chapter.toInt())}"
+            tvSerial.text =
+                "${context.getString(R.string.verse_number)} ${bookmark.serialNumber}"
+            tvStanzas.text = bookmark.stanzas.joinToString("\n")
+            tvMeaning.text =
+                "${context.getString(R.string.verse_meaning)}\n${bookmark.meaning}"
+
+            val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
+            val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
+
+            btnAudio.setOnClickListener {
+                (fragment.requireActivity() as? AppCompatActivity)
+                    ?.playAudioFromUrl(bookmark.site_url, bookmark.store_url)
             }
 
-            val bookmarks = Gson().fromJson(bookmarksJson, Bookmarks::class.java)
-            val updatedList = bookmarks.bookmark.toMutableList()
-            val existingBookmark = updatedList.find { it.key == vNum }
-            if (existingBookmark != null) {
-                updatedList.remove(existingBookmark)
-                val updatedBookmarks = Bookmarks(updatedList)
-                val updatedJson = Gson().toJson(updatedBookmarks)
-                file.writeText(updatedJson)
-                Toast.makeText(context, "Bookmark removed!", Toast.LENGTH_SHORT).show()
-                // Clear the container first
-                val container = fragment.requireView().findViewById<LinearLayout>(R.id.bookmarkContainer)
-                container.removeAllViews()
-
-                // Reload bookmarks
-                commonlib.loadAndDisplayBookmark(
+            btnBookmark.setOnClickListener {
+                removeBookmarkAndReload(
                     fragment = fragment,
-                    jsonFileName = "bookmarks.json",
-                    containerId = R.id.bookmarkContainer
+                    key = bookmark.key,
+                    containerId = containerId
                 )
             }
+
+            container.addView(view)
         }
-        container.addView(view)
     }
 }
 
-fun convertChapterNumberToBangla(chapter: Int): String {
+private fun removeBookmarkAndReload(
+    fragment: Fragment,
+    key: String,
+    containerId: Int
+) {
+    val context = fragment.requireContext()
+    val file = File(context.filesDir, "bookmarks.json")
+
+    val jsonString = file.readText()
+    val bookmarks = Gson().fromJson(jsonString, Bookmarks::class.java)
+
+    val updatedList = bookmarks.bookmark.filterNot { it.key == key }
+    file.writeText(Gson().toJson(Bookmarks(updatedList)))
+
+    Toast.makeText(context, "Bookmark removed!", Toast.LENGTH_SHORT).show()
+
+    commonlib.loadAndDisplayBookmark(
+        fragment = fragment,
+        jsonFileName = "bookmarks.json",
+        containerId = containerId
+    )
+}
+
+    fun convertChapterNumberToBangla(chapter: Int): String {
     // Digits mapping: 0-9 to Bangla numerals
     val banglaDigits = arrayOf("০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০", "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮")
     return if (chapter in 1..18) banglaDigits[chapter] else ""

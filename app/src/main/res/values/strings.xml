@@ -65,9 +65,9 @@
     অ্যাপ্লিকেশনটি আমার স্বর্গীয় ঠাকুরদা (সুনীল কুমার দাশ), স্বর্গীয় ঠাকুমা (নিরুপমা দাশ), স্বর্গীয় পিতা (দীপক কুমার দাশ) এবং স্বর্গীয় কাকা (সংকর কুমার দাশ) এর প্রতি শ্রদ্ধার্ঘ্য হিসেবে নির্মিত এবং তাদের স্মৃতি সংরক্ষণের জন্য এটি রক্ষণাবেক্ষণ করা হবে।</string>
 <string name="creditgoes_to">কৃতজ্ঞতা স্বীকার</string>
 <string name="creditgoes_to_text">এই অ্যাপ্লিকেশনটির জন্য শ্রীমদ্ভগবদ্গীতার মন্ত্র সমূহের অর্থ &lt;a href="https://gitasanghabd.org/gita.php"&gt;শ্রীশ্রী গীতাসংঘ বাংলাদেশ&lt;/a&gt; হতে সংগ্রহ করা হয়েছে।
-    অ্যাপ্লিকেশনটি মন্ত্র সমূহের অডিও সরাসরি &lt;a href="https://www.holy-bhagavad-gita.org/"&gt;ভাগবত গীতা ওয়েবসাইট&lt;/a&gt; থেকে স্ট্রিমিং করে।
+    এবং মন্ত্র সমূহের অডিও &lt;a href="https://www.holy-bhagavad-gita.org/"&gt;ভাগবত গীতা ওয়েবসাইট&lt;/a&gt; থেকে সংগ্রহ করা হয়েছে।
     গীতার মন্ত্র সমূহ সহজে পাঠ ও বোঝার সুবিধা করার জন্য এই ওয়েবসাইট দুইটির উদ্ভাবকদের আন্তরিক শ্রদ্ধা ও ধন্যবাদ জ্ঞাপন করছি।
 </string>
 <string name="licensed_under">মেধাস্বত্ব ও লাইসেন্স</string>
-<string name="licensed_under_text">অ্যাপ্লিকেশনটির মেধাস্বত্ব সংরক্ষিত। সমুদয় সোর্স কোড &lt;a href="https://www.apache.org/licenses/LICENSE-2.0"&gt; অ্যাপাচি লাইসেন্স ২.০&lt;/a&gt; এর অধীনে &lt;a href="https://github.com/dip06ece/BanglaGeeta"&gt; গীটহাবে&lt;/a&gt; উন্মুক্ত থাকবে।</string>
+<string name="licensed_under_text">অ্যাপ্লিকেশনটির মেধাস্বত্ব সংরক্ষিত। সমুদয় সোর্স কোড &lt;a href="https://www.apache.org/licenses/LICENSE-2.0"&gt; অ্যাপাচি লাইসেন্স ২.০&lt;/a&gt; এর অধীনে &lt;a href="https://github.com/dip06ece/GeetaInBangla"&gt; গীটহাবে&lt;/a&gt; উন্মুক্ত থাকবে।</string>
 </resources>

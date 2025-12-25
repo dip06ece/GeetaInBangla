@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="16dp"
     android:strokeWidth="1"
     android:strokeColor="@android:color/darker_gray">
@@ -38,7 +39,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/audio"
                     android:src="@android:drawable/ic_media_play"
-                    android:tint="@android:color/darker_gray"
+                    app:tint="@android:color/darker_gray"
                     android:padding="8dp"/>
 
                 <ImageButton
@@ -48,19 +49,17 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/bookmark"
                     android:src="@drawable/outline_bookmark_star_24"
-                    android:tint="@android:color/darker_gray"
+                    app:tint="@android:color/darker_gray"
                     android:padding="8dp"/>
 
-                <!--<ImageButton
+                <ImageButton
                     android:id="@+id/btnView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/view"
                     android:src="@android:drawable/ic_menu_view"
-                    android:tint="@android:color/black"
-                    android:padding="8dp"/>-->
-
+                    android:padding="8dp"/>
             </LinearLayout>
         </LinearLayout>
         <TextView
