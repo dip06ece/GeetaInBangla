@@ -22,12 +22,11 @@ Key goals:
 
 ## ✅ Developed Features
 
-- ✅ Display chapters and verses from JSON assets
-- ✅ Audio playback for each verse (Online - available verses only)
-- ✅ Bookmarks for favorite verses
+- ✅ Display chapters and verses with meaning offline
+- ✅ Audio playback for each verse (Download online, play offline)
+- ✅ Bookmarks for favorite verses (Arranged by chapters and sorted by serial number)
 - ✅ Clean, easy to understand UI 
-- ✅ Works offline for reading
-- ✅ Bangla text rendering with proper fonts
+- ✅ Already read verses are marked differently
 
 ---
 
@@ -46,24 +45,29 @@ Key goals:
 
 ## 🚀 Upcoming Features
 
-- 🔜 Arrange bookmarks in proper order 
-- 🔜 Track reading progress and personal dashboard
+- 🔜 Read progress summary page (Overall and chapterwise)
 - 🔜 Share verses via message and social apps
-- 🔜 Multiple audio sources integration 
+- 🔜 Play audio files sequentially
+- 🔜 Integration of audio for meaning of verses
+- 🔜 Add more insights of verses and summary of each chapters
+- 🔜 Todays verse notification alert
+- 🔜 Geeta reading time alert
+- 🔜 Discuss my understanding with scolars
 
 ---
 
 ## 🐞 Known Issues
 
-- Audio playback might fail if audio file is not availavle (or offline)
-- Bookmarks are in jumbled order 
+- Require to clear cache if previously used
+- Clearing app cache/memory will reset progress
+- Supports devices with API 24 and above only
 
 ---
 
 ## 🙏 Acknowledgements
 
 <p>The meanings of the verses in this application have been sourced from <a href="https://gitasanghabd.org/gita.php">Shree Shree Gita Sangha Bangladesh</a>.</p>
-<p>The application streams audio of the verses directly from the <a href="https://www.holy-bhagavad-gita.org/">Holy Bhagavad Gita website</a>.</p>
+<p>The application collected audio of the verses directly from the <a href="https://www.holy-bhagavad-gita.org/">Holy Bhagavad Gita website but streams seperately</a>.</p>
 <p>Heartfelt respect and thanks to the creators of these two websites for making it easier to read and understand the verses of the Gita.</p>
 
 ---
