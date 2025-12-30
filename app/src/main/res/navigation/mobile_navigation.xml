@@ -6,6 +6,12 @@
     app:startDestination="@+id/nav_introduction">
 
     <fragment
+        android:id="@+id/nav_progress"
+        android:name="com.dip.geetainbangla.ui.chapters.ProgressTrackingFragment"
+        android:label="@string/menu_progress"
+        tools:layout="@layout/fragment_progress_tracking" />
+
+    <fragment
         android:id="@+id/nav_introduction"
         android:name="com.dip.geetainbangla.ui.chapters.IntroductionFragment"
         android:label="@string/menu_introduction"

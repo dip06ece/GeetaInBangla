@@ -56,6 +56,15 @@
                     android:src="@drawable/outline_bookmark_star_24"
                     android:tint="@android:color/darker_gray"
                     android:padding="8dp"/>
+
+                <ImageButton
+                    android:id="@+id/btnSocial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/social"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_share_24" />
             </LinearLayout>
         </LinearLayout>
         <TextView

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp">
+
+    <!-- Chapter title -->
+    <TextView
+        android:id="@+id/tvChapterTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:text="অধ্যায় ১"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Progress bar -->
+    <ProgressBar
+        android:id="@+id/chapterProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:max="50"
+        android:layout_marginHorizontal="8dp"/>
+
+    <!-- Progress text -->
+    <TextView
+        android:id="@+id/tvChapterProgressText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:text="0 / 00 (0.00%)"
+        android:textSize="12sp"
+        android:gravity="end" />
+
+</LinearLayout>

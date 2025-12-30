@@ -3,7 +3,10 @@ package com.dip.geetainbangla.commonutils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.widget.ProgressBar
+import android.view.View
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
 import android.view.LayoutInflater
@@ -75,6 +78,7 @@ object commonlib {
             val view = inflater.inflate(R.layout.item_verse, container, false)
 
             val btnView = view.findViewById<ImageButton>(R.id.btnView)
+
             val verse_store_url = verse.store_url
             if (cachedAudioFiles.contains(verse_store_url)) {
                 // Audio already downloaded → eye bright (gray)
@@ -102,6 +106,7 @@ object commonlib {
 
             val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
             val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
+            val btnSocial = view.findViewById<ImageButton>(R.id.btnSocial)
 
             val verseString = if (verseNumber > 9) "0$verseNumber" else "00$verseNumber"
 
@@ -167,6 +172,33 @@ object commonlib {
 
                     Toast.makeText(context, "Bookmark saved!", Toast.LENGTH_SHORT).show()
                 }
+            }
+            btnSocial.setOnClickListener {
+                val chapterText = convertChapterNumberToBangla(chapterBack.toInt())
+                val verseText = verse.serialNumber
+                val stanzasText = verse.stanzas.joinToString("\n")
+                val meaningText = verse.meaning
+
+val shareText = """
+শ্রীমদ্ভগবদ্গীতা
+
+অধ্যায় - $chapterText 
+শ্লোক নং - $verseText
+
+শ্লোক:
+$stanzasText
+
+অর্থ: $meaningText
+""".trimIndent()
+
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, shareText)
+                    }
+
+                    fragment.startActivity(
+                        Intent.createChooser(shareIntent, "শেয়ার করুন")
+                    )
             }
 
             btnView.setOnClickListener {
@@ -396,6 +428,7 @@ fun loadAndDisplayBookmark(
 
             val btnAudio = view.findViewById<ImageButton>(R.id.btnAudio)
             val btnBookmark = view.findViewById<ImageButton>(R.id.btnBookmark)
+            val btnSocial = view.findViewById<ImageButton>(R.id.btnSocial)
 
             btnAudio.setOnClickListener {
                 (fragment.requireActivity() as? AppCompatActivity)
@@ -407,6 +440,33 @@ fun loadAndDisplayBookmark(
                     fragment = fragment,
                     key = bookmark.key,
                     containerId = containerId
+                )
+            }
+            btnSocial.setOnClickListener {
+                val chapterText = convertChapterNumberToBangla(bookmark.chapter.toInt())
+                val verseText = bookmark.serialNumber
+                val stanzasText = bookmark.stanzas.joinToString("\n")
+                val meaningText = bookmark.meaning
+
+                val shareText = """
+শ্রীমদ্ভগবদ্গীতা
+
+অধ্যায় - $chapterText 
+শ্লোক নং - $verseText
+
+শ্লোক:
+$stanzasText
+
+অর্থ: $meaningText
+""".trimIndent()
+
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                }
+
+                fragment.startActivity(
+                    Intent.createChooser(shareIntent, "শেয়ার করুন")
                 )
             }
 
@@ -443,6 +503,80 @@ private fun removeBookmarkAndReload(
     val banglaDigits = arrayOf("০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০", "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮")
     return if (chapter in 1..18) banglaDigits[chapter] else ""
 }
+
+    fun loadAndDisplayProgress(fragment: Fragment,
+                               containerId: Int){
+        val context = fragment.requireContext()
+        val rootView = fragment.requireView().findViewById<LinearLayout>(containerId)
+
+        val progressBar = rootView.findViewById<ProgressBar>(R.id.progressBar)
+        val tvProgressCount = rootView.findViewById<TextView>(R.id.tvProgressCount)
+        val tvProgressPercent = rootView.findViewById<TextView>(R.id.tvProgressPercent)
+
+        val TOTAL_AUDIO_FILES = 640
+
+        // IMPORTANT: match where you actually save audio
+        val audioDir = File(context.filesDir, "audio")
+
+        // val audioDir = File(context.cacheDir, "audio")  // If you decide to use cache instead:
+
+        val downloadedCount = if (audioDir.exists()) {
+            audioDir.listFiles { file ->
+                file.isFile && file.extension.equals("mp3", ignoreCase = true)
+            }?.size ?: 0
+        } else {
+            0
+        }
+
+        progressBar.max = TOTAL_AUDIO_FILES
+        progressBar.progress = downloadedCount
+
+        tvProgressCount.text = "$downloadedCount / $TOTAL_AUDIO_FILES"
+
+        val percent = (downloadedCount.toFloat() / TOTAL_AUDIO_FILES) * 100
+        val percentText = String.format("%.2f", percent)
+        tvProgressPercent.text = "$percentText% পাঠ সম্পন্ন"
+
+        val chapterViews = listOf(
+            R.id.ch1, R.id.ch2, R.id.ch3, R.id.ch4, R.id.ch5, R.id.ch6,
+            R.id.ch7, R.id.ch8, R.id.ch9, R.id.ch10, R.id.ch11, R.id.ch12,
+            R.id.ch13, R.id.ch14, R.id.ch15, R.id.ch16, R.id.ch17, R.id.ch18
+        )
+
+        val chapterTotals = listOf(
+            35, 71, 41, 40, 27, 44, 30, 23, 32,
+            39, 51, 16, 31, 21, 19, 19, 26, 75
+        )
+
+        val chapterNames = listOf(
+            "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯",
+            "১০", "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮"
+        )
+
+        chapterViews.forEachIndexed { index, viewId ->
+            val chapterView = rootView.findViewById<View>(viewId)
+
+            val tvTitle = chapterView.findViewById<TextView>(R.id.tvChapterTitle)
+            val progressBar = chapterView.findViewById<ProgressBar>(R.id.chapterProgressBar)
+            val tvText = chapterView.findViewById<TextView>(R.id.tvChapterProgressText)
+
+            val chapterNo = index + 1
+            val total = chapterTotals[index]
+
+            // Count downloaded files for this chapter
+            val downloaded = audioDir.listFiles { file ->
+                file.name.startsWith(String.format("%03d_", chapterNo))
+            }?.size ?: 0
+
+            val percent = (downloaded.toFloat() / total) * 100
+
+            tvTitle.text = "অধ্যায় "+ chapterNames[index] //$chapterNo"
+            progressBar.max = total
+            progressBar.progress = downloaded
+            tvText.text = "$downloaded / $total (${String.format("%.2f", percent)}%)"
+        }
+
+    }
 
 }
 

@@ -13,6 +13,7 @@
 
 <string name="menu_introduction">গীতাপাঠপূর্ব মঙ্গলাচরণ</string>
 <string name="menu_bookmarks">বুকমার্ক কৃত শ্লোকসমূহ </string>
+    <string name="menu_progress">অগ্রগতি </string>
 <string name="menu_chapters">অধ্যায় সমূহ</string>
 <string name="menu_chapter1">প্রথম অধ্যায়</string>
 <string name="menu_chapter2">দ্বিতীয় অধ্যায়</string>
@@ -59,7 +60,9 @@
 <string name="audio">অডিও</string>
 <string name="bookmark">বুকমার্ক</string>
 <string name="view">পাঠকৃত</string>
+    <string name="social">শেয়ার</string>
 
+    <string name="overall_Progress">সর্বোপরি অগ্রগতি </string>
 <string name="dedicated_to">উৎসর্গ</string>
 <string name="dedicated_to_text">এই অ্যাপ্লিকেশনটি সহজে শ্রীমদ্ভগবদ্গীতা পড়া ও শেখার জন্য তৈরি করা হয়েছে। যারা গীতার সত্য জানতে এবং তা জীবনে প্রয়োগ করে মানসিক শান্তি অর্জন করতে আগ্রহী তাদের সকলের জন্য এটি উৎসর্গ করা হল।
     অ্যাপ্লিকেশনটি আমার স্বর্গীয় ঠাকুরদা (সুনীল কুমার দাশ), স্বর্গীয় ঠাকুমা (নিরুপমা দাশ), স্বর্গীয় পিতা (দীপক কুমার দাশ) এবং স্বর্গীয় কাকা (সংকর কুমার দাশ) এর প্রতি শ্রদ্ধার্ঘ্য হিসেবে নির্মিত এবং তাদের স্মৃতি সংরক্ষণের জন্য এটি রক্ষণাবেক্ষণ করা হবে।</string>

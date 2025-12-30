@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvProgressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overall_Progress"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="640"/>
+
+        <TextView
+            android:id="@+id/tvProgressCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 / 640"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:id="@+id/tvProgressPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <!-- CHAPTER PROGRESS HEADER -->
+        <TextView
+            android:text="অধ্যায় অনুসারে অগ্রগতি"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <include android:id="@+id/ch1" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch2" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch3" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch4" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch5" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch6" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch7" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch8" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch9" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch10" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch11" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch12" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch13" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch14" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch15" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch16" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch17" layout="@layout/item_chapter_progress"/>
+        <include android:id="@+id/ch18" layout="@layout/item_chapter_progress"/>
+
+
+        <!-- Repeat up to Chapter 18 -->
+    </LinearLayout>
+</ScrollView>

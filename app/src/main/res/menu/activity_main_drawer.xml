@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_progress"
+            android:title="@string/menu_progress"
+            android:icon="@drawable/ic_progress" />
+        <item
             android:id="@+id/nav_bookmarks"
             android:icon="@drawable/baseline_menu_bookmarks"
             android:title="@string/menu_bookmarks" />
