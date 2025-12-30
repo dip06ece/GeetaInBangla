@@ -445,7 +445,7 @@ fun loadAndDisplayBookmark(
             btnSocial.setOnClickListener {
                 val chapterText = convertChapterNumberToBangla(bookmark.chapter.toInt())
                 val verseText = bookmark.serialNumber
-                val stanzasText = bookmark.stanzas.joinToString("\n")
+                val stanzasText = bookmark.stanzas.joinToString("\n"):wq
                 val meaningText = bookmark.meaning
 
                 val shareText = """
